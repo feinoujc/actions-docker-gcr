@@ -23,7 +23,7 @@ Fork from https://github.com/urcomputeringpal/actions-docker
 - Create a Secret on your repository named `GCLOUD_SERVICE_ACCOUNT_KEY` (Settings > Secrets) with the contents of:
 
 ```shell
-echo -n "$(cat path-to/downloaded-key/4a276e9e5862.json)" | base64
+ openssl base64 < ~/Downloads/feinoujc-d2ff0f411df0.json | tr -d '\n' | pbcopy
 ```
 
 - That's it! The GitHub Actions in this repository read this Secret and provide the correct values to the Docker daemon by default if present. If a Secret isn't present, `build` _may_ succeed but `push` will return an error!
@@ -45,10 +45,10 @@ jobs:
       - uses: actions/checkout@v1
 
       - name: Docker Build
-        uses: benjlevesque/actions-docker-gcr/build@master
+        uses: feinoujc/actions-docker-gcr/build@master
 
       - name: Docker Push
-        uses: benjlevesque/actions-docker-gcr/push@master
+        uses: feinoujc/actions-docker-gcr/push@master
         env:
           GCLOUD_SERVICE_ACCOUNT_KEY: ${{ secrets.GCLOUD_SERVICE_ACCOUNT_KEY }}
 ```
@@ -61,13 +61,13 @@ jobs:
       - uses: actions/checkout@v1
 
       - name: Docker Build
-        uses: benjlevesque/actions-docker-gcr/build@master
+        uses: feinoujc/actions-docker-gcr/build@master
         env:
           IMAGE: my-project/my-image
           GCLOUD_REGISTRY: eu.gcr.io
 
       - name: Docker Push
-        uses: benjlevesque/actions-docker-gcr/push@master
+        uses: feinoujc/actions-docker-gcr/push@master
         env:
           IMAGE: my-project/my-image
           GCLOUD_REGISTRY: eu.gcr.io
